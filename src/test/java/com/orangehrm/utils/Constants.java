@@ -5,6 +5,7 @@ public class Constants {
 	public static final String CREDENTIALS_FILEPATH = "src/test/resources/configs/credentials.properties";
 	
 	public static final String XL_FILEPATH = "src/test/resources/testdata/OrangeHrmData.xlsx";
+	public static final String XLNAME_FILEPATH = "src/test/resources/testdata/OrangeHrmDataName.xlsx";
 
 	public static final String REPORT_FILEPATH = "target/report/orangeHrm.html";
 

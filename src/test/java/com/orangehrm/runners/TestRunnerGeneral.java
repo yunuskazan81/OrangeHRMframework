@@ -12,7 +12,7 @@ import cucumber.api.junit.Cucumber;
 		//,dryRun= true
 		,monochrome= true
 		,plugin= {"pretty", "html:target/cucumber-deafult-report", "json:target/cucumber.json"}
-		,tags= {"@compare123"}
+		,tags= {"@ExcelData"}
 		
 		)
 

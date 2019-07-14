@@ -20,6 +20,7 @@ import com.orangehrm.utils.CommonMethods;
 import com.orangehrm.utils.ConfigsReader;
 import com.orangehrm.utils.Constants;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -54,7 +55,7 @@ public class AddEmployeeSteps extends CommonMethods {
 		sendText(emp.EmpFirstName, fName);
 		sendText(emp.middleName, mName);
 		sendText(emp.EmpLastName, lName);
-		click(emp.locationDropDown);
+		click(emp.locationDropdown);
 		selectList(emp.locationList, location);
 	}
 
@@ -112,7 +113,7 @@ public class AddEmployeeSteps extends CommonMethods {
 	}
 	
 	@When("I provide employee details from excel {string}")
-	public void i_provide_employee_details_from_excel(String sheetName) throws IOException {
+	public void i_provide_employee_details_from_excel(String sheetName) throws IOException, InterruptedException {
 		//lets say they come from excel
 		/*
 		 * fis
@@ -136,6 +137,7 @@ public class AddEmployeeSteps extends CommonMethods {
 		
 		FileInputStream fis= new FileInputStream(Constants.XL_FILEPATH);
 		
+		
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 		
 		XSSFSheet sheet= workbook.getSheet("Locations");
@@ -146,24 +148,81 @@ public class AddEmployeeSteps extends CommonMethods {
 		for(int i=1; i<rownum; i++) {
 			for(int j=0; j<colnum; j++) {
 		
-		   String cells= sheet.getRow(i).getCell(j).toString();
-		    
+		   String cells= sheet.getRow(i).getCell(j).toString(); 
+		   
 		   sendText(emp.EmpFirstName, cells);
+		   
+		   cells= sheet.getRow(i).getCell(j).toString(); 
+		   
 			sendText(emp.middleName, cells);
+			
+			cells= sheet.getRow(i).getCell(j).toString(); 
+			
 			sendText(emp.EmpLastName, cells);
-			click(emp.locationDropDown);
+			
+			Thread.sleep(2000);
+			click(emp.locationDropdown);
+			
+			cells= sheet.getRow(i).getCell(j).toString(); 
+			
 			selectList(emp.locationList, cells);
+			
+		    click(emp.EmpSaveBtn);
+			
+		    Thread.sleep(2000);
+		    
+		    home.addEmployee.click();
+			
 		
 			}
 		}
-		
-		
 		
 		workbook.close();
 		fis.close();
 		
 		
 	}
+
+	@And("I click on create login details")
+	public void i_click_on_create_login_details() {
+	  
+		// click(emp.checkCredentials);
+	}
 	
+	@And("I provide all mandatory fields")
+	public void i_provide_all_mandatory_fields() {
+	 
+	}
+	
+	@Then("I see employee is added successfully")
+	public void i_see_employee_is_added_successfully() throws IOException {
+	   
+		FileInputStream fis= new FileInputStream(Constants.XLNAME_FILEPATH);
+		
+		
+		XSSFWorkbook wb= new XSSFWorkbook();
+		
+		XSSFSheet names= wb.getSheet("Locations");
+		
+		int row= names.getPhysicalNumberOfRows();
+		int colm= names.getRow(0).getLastCellNum();
+		
+		for(int i=0; i< row; i++ ) {
+			
+			for(int j=0; j<colm+1; j++) {
+		
+	String expectedName= names.getRow(i).getCell(j).toString()+" "+names.getRow(i).getCell(j+1).toString();
+	click(emp.empCheck);
+	
+	String actualName=	emp.empCheck.getText();
+	
+	Assert.assertEquals(expectedName, actualName);
+	
+			}	
+		}
+		
+		wb.close();
+		fis.close();
+	}
 	
 }

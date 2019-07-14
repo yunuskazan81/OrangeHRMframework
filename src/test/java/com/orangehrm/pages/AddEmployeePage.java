@@ -24,8 +24,8 @@ public class AddEmployeePage extends BaseClass {
 	@FindBy(xpath="//input[@id='employeeId']")
 	public WebElement EmployeeID;
 	
-	@FindBy(xpath="//div[@id='location_inputfileddiv']//input")
-	public WebElement locationDropDown;
+	@FindBy(xpath="//div[@id='location_inputfileddiv']//input")  //ul[@id='select-options-22e6de9f-a0eb-234f-8976-a90c3e7069a2']/../input  
+	public WebElement locationDropdown;
 	
 	@FindBy(xpath="//div[@id='location_inputfileddiv']//ul")
     public WebElement locationList;
